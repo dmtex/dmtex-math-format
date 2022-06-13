@@ -1,0 +1,29 @@
+= User Manual
+
+== Purpose
+
+The module _dmtex-math-format-unicode_ provides Unicode numbers for subscripts and superscripts.
+
+Converting to Unicode:
+
+[source,java]
+----
+class Sample {
+  public static void main(String[] args) {
+    System.out.println(new SuperscriptHelper().to("-2"));
+    System.out.println(new SubscriptHelper().to("-2"));
+  }
+}
+----
+
+Converting from Unicode:
+
+[source,java]
+----
+class Sample {
+  public static void main(String[] args) {
+    System.out.println(new SuperscriptHelper().from("\u207B\u00B2"));
+    System.out.println(new SubscriptHelper().from("\u207B\u00B2"));
+  }
+}
+----
