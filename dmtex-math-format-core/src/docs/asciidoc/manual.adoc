@@ -1,0 +1,70 @@
+= User Manual
+
+== Purpose
+
+The module _dmtex-math-format-core_ provides various number formatting support via SPI implementation.
+
+== Predefined classes
+
+`ScientificFormat` class allows to format numbers with scientific format like `1.25E3`.
+The amount of digits is set at instantiation.
+
+[source,java]
+----
+class Sample {
+  public static void main(String[] args) {
+    ScientificFormat format = new ScientificFormat(5);
+    System.out.println(format.format(12345));
+  }
+}
+----
+
+`CompactFormat` class allows to format numbers as regular or scientific view choosing the shortest option.
+
+[source,java]
+----
+class Sample {
+  public static void main(String[] args) {
+    CompactFormat format = new CompactFormat(5);
+    System.out.println(format.format(12345));
+  }
+}
+----
+
+The class diagram is following:
+
+[plantuml,format,svg]
+----
+class NumberFormat
+class ScientificFormat
+class CompactFormat
+NumberFormat <|-- ScientificFormat
+NumberFormat <|-- CompactFormat
+CompactFormat -> ScientificFormat
+----
+
+== Extensions
+
+The default formatting can be changed for HTML, TeX or whatever.
+
+To do that one needs to subclass `ScientificFormat` class and provide formatting for special cases:
+
+[cols="1,3"]
+|===
+| Method                       | Description
+
+| `String getTimes()`          | Provides replacement for default letter `E` that means _times 10 to the X power_.
+| `String toSup(String value)` | Converts given value to superscript, by default it does nothing with given value.
+|===
+
+As for `CompactFormat` class its extension should provide `ScientificFormat`
+by method `getScientificFormat(int digitCount)`.
+
+== Integration with SPI
+
+The implementations provided by module can be used in `java.text.spi.NumberFormatProvider` interface.
+
+NOTE: Starting from Java 9 CLDR mechanism is used by default.
+To activate SPI mechanism Java application should be run with the key `-Djava.locale.providers=SPI`.
+
+See unit test for examples.
